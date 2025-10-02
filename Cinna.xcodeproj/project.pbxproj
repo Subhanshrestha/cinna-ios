@@ -29,33 +29,9 @@
 		91EAF7472E85C97F009E1489 /* CinnaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CinnaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		D2DF301D2E8793F40099D960 /* Exceptions for "Cinna" folder in "Cinna" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 91EAF72F2E85C97D009E1489 /* Cinna */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		D2DF301E2E8793F40099D960 /* Exceptions for "Cinna" folder in "Compile Sources" phase from "Cinna" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 91EAF72C2E85C97D009E1489 /* Sources */;
-			membershipExceptions = (
-				Info.plist,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		91EAF7322E85C97D009E1489 /* Cinna */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				D2DF301D2E8793F40099D960 /* Exceptions for "Cinna" folder in "Cinna" target */,
-				D2DF301E2E8793F40099D960 /* Exceptions for "Cinna" folder in "Compile Sources" phase from "Cinna" target */,
-			);
 			path = Cinna;
 			sourceTree = "<group>";
 		};

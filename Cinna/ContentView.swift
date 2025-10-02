@@ -2,21 +2,33 @@
 //  ContentView.swift
 //  Cinna
 //
-//  Created by Subhan Shrestha on 9/25/25.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var firstTab = "home" //startup on the home tab
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView(selection: $firstTab) {
+            Theaters()
+                .tabItem{
+                    Label("Theaters", systemImage: "ticket")
+                }
+            Home()
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+                .tag("home")
+            User()
+                .tabItem{
+                    Label("User", systemImage: "person")
+                }
+            
         }
-        .padding()
     }
+    
 }
 
 #Preview {
