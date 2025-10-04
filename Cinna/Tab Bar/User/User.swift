@@ -75,19 +75,19 @@ struct User: View {
                 }
             }
             .navigationTitle(
-                Text("My ") + Text("Cinna").italic()
+                Text("User")
             )
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 
-//                ToolbarItem(placement: .topBarLeading) {
-//                    (Text("My \(Text("Cinna").italic())"))
-//                        .font(.headline)
-//                        .lineLimit(1)
-//                        .fixedSize()
-//                        .allowsHitTesting(false)
-//                        .accessibilityAddTraits(.isHeader)
-//                } //appears to be impossible to make it all the way to the left
+                //                ToolbarItem(placement: .topBarLeading) {
+                //                    (Text("My \(Text("Cinna").italic())"))
+                //                        .font(.headline)
+                //                        .lineLimit(1)
+                //                        .fixedSize()
+                //                        .allowsHitTesting(false)
+                //                        .accessibilityAddTraits(.isHeader)
+                //                } //appears to be impossible to make it all the way to the left
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
