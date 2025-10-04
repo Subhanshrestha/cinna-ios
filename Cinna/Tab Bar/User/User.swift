@@ -20,15 +20,50 @@ struct User: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .topTrailing) {
-                VStack(alignment: .leading, spacing: 24) {
-                    Text("Account Preferences")
-                        .font(.title2.bold())
+                
+                //body shit
+                ScrollView {
                     
-                    Text("Your personalized settings and history will appear here.")
-                        .foregroundStyle(.secondary)
+                    VStack(alignment: .center, spacing: 32) {
+                        (Text("Hello, my \(Text("Cinna").italic())"))
+                            .font(.largeTitle.bold())
+                    }
+                    VStack(alignment: .center, spacing: 6) {
+                        Text("Member since October 2, 2025")
+                            .font(.headline)
+                        Text("Thank you for being an \(Text("OG").bold()) \(Text("Cinna").italic()) !")
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(32)
                     
-                    Spacer()
-                }
+                    //list of menu items
+                    VStack(spacing: 12) {
+                        NavigationLink(destination: Profile()) {
+                            UserMenuItem(title: "Profile", systemImage: "person.crop.circle")
+                        }
+                        
+                        NavigationLink(destination: MovieTickets()) {
+                            UserMenuItem(title: "Movie Tickets", systemImage: "ticket")
+                        }
+                        
+                        NavigationLink(destination: MoviePreferences()) {
+                            UserMenuItem(title: "Movie Preferences", systemImage: "slider.horizontal.3")
+                        }
+                        
+                        NavigationLink(destination: PrivacySecurity()) {
+                            UserMenuItem(title: "Privacy & Security", systemImage: "lock.shield")
+                        }
+                    }//end list of menu items
+                    
+                    Image("UserPicture")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 240)
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 32)
+                    
+                    
+                }//end body
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -39,8 +74,15 @@ struct User: View {
                         .padding(.top, 8)
                 }
             }
-            .navigationTitle("Profile")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    (Text("My \(Text("Cinna").italic())"))
+                        .font(.headline)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .allowsHitTesting(false)
+                        .accessibilityAddTraits(.isHeader)
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
@@ -53,9 +95,11 @@ struct User: View {
                     }
                 }
             }
+            
         }
     }
 }
+
 
 private struct NotificationDropdown: View {
     let notifications: [UserNotification]
