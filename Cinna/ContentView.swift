@@ -8,23 +8,33 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var firstTab = "home" //startup on the home tab
+    private enum Tab: Hashable {
+        case theaters
+        case home
+        case user
+    }
+    
+    @State private var selectedTab: Tab = .home
     
     var body: some View {
-        TabView(selection: $firstTab) {
+        TabView(selection: $selectedTab) {
             Theaters()
                 .tabItem{
                     Label("Theaters", systemImage: "ticket")
                 }
+                .tag(Tab.theaters)
+            
             Home()
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
-                .tag("home")
+                .tag(Tab.home)
+
             User()
                 .tabItem{
                     Label("User", systemImage: "person")
                 }
+                .tag(Tab.user)
             
         }
     }

@@ -9,6 +9,11 @@ import SwiftUI
 
 struct Theaters: View {
     var body: some View {
-        Text("Theater page")
+        
+        NavigationStack {
+            Text("Theater page")
+                .padding()
+                .navigationTitle("Theaters")
+        }
     }
 }
