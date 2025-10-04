@@ -10,6 +10,5 @@ import SwiftUI
 struct Home: View {
     var body: some View {
         Text("This is the home page")
-            .padding()
     }
 }

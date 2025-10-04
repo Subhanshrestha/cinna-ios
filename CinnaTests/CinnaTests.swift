@@ -6,7 +6,6 @@
 //
 
 import Testing
-@testable import Cinna
 
 struct CinnaTests {
 
