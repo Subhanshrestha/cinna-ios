@@ -74,15 +74,21 @@ struct User: View {
                         .padding(.top, 8)
                 }
             }
+            .navigationTitle(
+                Text("My ") + Text("Cinna").italic()
+            )
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    (Text("My \(Text("Cinna").italic())"))
-                        .font(.headline)
-                        .lineLimit(1)
-                        .fixedSize()
-                        .allowsHitTesting(false)
-                        .accessibilityAddTraits(.isHeader)
-                }
+                
+//                ToolbarItem(placement: .topBarLeading) {
+//                    (Text("My \(Text("Cinna").italic())"))
+//                        .font(.headline)
+//                        .lineLimit(1)
+//                        .fixedSize()
+//                        .allowsHitTesting(false)
+//                        .accessibilityAddTraits(.isHeader)
+//                } //appears to be impossible to make it all the way to the left
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
