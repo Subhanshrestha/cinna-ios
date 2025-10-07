@@ -25,7 +25,7 @@ struct User: View {
                 ScrollView {
                     
                     VStack(alignment: .center, spacing: 32) {
-                        (Text("Hello, my \(Text("Cinna").italic())"))
+                        (Text("My \(Text("Cinna").italic())"))
                             .font(.largeTitle.bold())
                     }
                     VStack(alignment: .center, spacing: 6) {
