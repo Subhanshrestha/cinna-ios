@@ -1,0 +1,15 @@
+# Xcode build and user files
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+*.moved-aside
+*.xccheckout
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+
+# macOS cruft
+.DS_Store
