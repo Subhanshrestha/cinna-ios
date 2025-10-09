@@ -18,7 +18,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            Theaters()
+            TheatersView()
                 .tabItem{
                     Label("Theaters", systemImage: "ticket")
                 }

@@ -6,56 +6,41 @@ struct TheaterDetail: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-
-                // Header image
-                Image(theater.imageName)
+                // Placeholder header image
+                Image(systemName: "film")
                     .resizable()
-                    .scaledToFill()
-                    .frame(height: 250)
-                    .clipped()
-                    .cornerRadius(12)
-                    .shadow(radius: 4)
-                    .padding(.horizontal)
+                    .scaledToFit()
+                    .frame(height: 200)
+                    .foregroundColor(.gray)
+                    .opacity(0.5)
+                    .padding()
 
-                // Text info
                 VStack(alignment: .leading, spacing: 8) {
                     Text(theater.name)
                         .font(.title2)
                         .bold()
 
-                    HStack {
-                        Text("⭐️ \(theater.rating)")
-                        Text("(\(theater.reviews) reviews)")
-                            .foregroundColor(.gray)
+                    if let rating = theater.rating {
+                        Text("⭐️ \(rating, specifier: "%.1f")")
+                            .font(.subheadline)
+                            .foregroundColor(.orange)
                     }
-                    .font(.subheadline)
 
-                    Text(theater.type)
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-
-                    Divider()
-
-                    Text("📍 \(theater.address)")
-                        .font(.subheadline)
-
-                    Text(theater.description)
-                        .font(.body)
-                        .foregroundColor(.secondary)
-                        .padding(.top, 4)
+                    if let address = theater.address {
+                        Text("📍 \(address)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
 
                     Divider()
                         .padding(.vertical, 8)
 
-                    // Placeholder for future expansion
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("🎟 Coming Soon")
-                            .font(.headline)
-                        Text("Live showtimes, seat selection, and calendar integration will be added here.")
-                            .font(.callout)
-                            .foregroundColor(.blue)
-                            .italic()
-                    }
+                    Text("🎟 Coming Soon")
+                        .font(.headline)
+                    Text("Live showtimes, seat previews, and calendar integration will appear here.")
+                        .font(.callout)
+                        .foregroundColor(.blue)
+                        .italic()
                 }
                 .padding(.horizontal)
             }
@@ -68,6 +53,12 @@ struct TheaterDetail: View {
 }
 
 #Preview {
-    TheaterDetail(theater: sampleTheaters[0])
+    TheaterDetail(theater: Theater(
+        id: "test",
+        name: "Regal New River Valley",
+        rating: 4.4,
+        address: "Christiansburg, VA",
+        location: .init(latitude: 37.129, longitude: -80.403)
+    ))
 }
 

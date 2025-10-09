@@ -1,6 +1,17 @@
+//
+//  TheatersOld.swift
+//  Cinna
+//
+//  Created by Subhan Shrestha on 10/9/25.
+//
+
+#if false
+
+
 import SwiftUI
 
-struct Theater: Identifiable {
+// MARK: - Legacy Theater Model (used only for backup/demo view)
+struct LegacyTheater: Identifiable {
     let id = UUID()
     let name: String
     let rating: String
@@ -11,29 +22,31 @@ struct Theater: Identifiable {
     let imageName: String
 }
 
-let sampleTheaters: [Theater] = [
-    Theater(name: "B&B Theatres Blacksburg",
-            rating: "4.4", reviews: "2.4K", type: "Movie theater",
-            address: "1614 S Main St, Christiansburg, VA",
-            description: "Comfortable seating, adequate concessions, and bathrooms.",
-            imageName: "theater1"),
-    Theater(name: "Regal New River Valley",
-            rating: "4.4", reviews: "1.5K", type: "Movie theater",
-            address: "Christiansburg, VA",
-            description: "Spacious seating with fully reclining chairs.",
-            imageName: "theater2"),
-    Theater(name: "Lyric Theatre",
-            rating: "4.8", reviews: "391", type: "Performing arts theater",
-            address: "135 College Ave, Blacksburg, VA",
-            description: "Shows excellent films, hosts concerts, and has a bar!",
-            imageName: "theater3"),
-    Theater(name: "Scarette’s Radford Cinema",
-            rating: "4.5", reviews: "324", type: "Movie theater",
-            address: "Fairlawn, VA",
-            description: "Small, intimate theater with great sound.",
-            imageName: "theater4")
+// MARK: - Sample Data
+let sampleTheaters: [LegacyTheater] = [
+    LegacyTheater(name: "B&B Theatres Blacksburg",
+                  rating: "4.4", reviews: "2.4K", type: "Movie theater",
+                  address: "1614 S Main St, Christiansburg, VA",
+                  description: "Comfortable seating, adequate concessions, and bathrooms.",
+                  imageName: "theater1"),
+    LegacyTheater(name: "Regal New River Valley",
+                  rating: "4.4", reviews: "1.5K", type: "Movie theater",
+                  address: "Christiansburg, VA",
+                  description: "Spacious seating with fully reclining chairs.",
+                  imageName: "theater2"),
+    LegacyTheater(name: "Lyric Theatre",
+                  rating: "4.8", reviews: "391", type: "Performing arts theater",
+                  address: "135 College Ave, Blacksburg, VA",
+                  description: "Shows excellent films, hosts concerts, and has a bar!",
+                  imageName: "theater3"),
+    LegacyTheater(name: "Scarette’s Radford Cinema",
+                  rating: "4.5", reviews: "324", type: "Movie theater",
+                  address: "Fairlawn, VA",
+                  description: "Small, intimate theater with great sound.",
+                  imageName: "theater4")
 ]
 
+// MARK: - Legacy View (UI demo)
 struct Theaters: View {
     var body: some View {
         NavigationStack {
@@ -127,3 +140,5 @@ struct Theaters: View {
     Theaters()
 }
 
+
+#endif
