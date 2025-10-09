@@ -1,5 +1,5 @@
 //
-//  Untitled 3.swift
+//  MoviePreferences.swift
 //  Cinna
 //
 //  Created by Brighton Young on 10/4/25.

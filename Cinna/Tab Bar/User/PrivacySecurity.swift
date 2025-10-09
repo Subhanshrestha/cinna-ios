@@ -1,5 +1,5 @@
 //
-//  Untitled 4.swift
+//  PrivacySecurity.swift
 //  Cinna
 //
 //  Created by Brighton Young on 10/4/25.

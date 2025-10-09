@@ -1,5 +1,5 @@
 //
-//  Untitled 2.swift
+//  MovieTickets.swift
 //  Cinna
 //
 //  Created by Brighton Young on 10/4/25.
