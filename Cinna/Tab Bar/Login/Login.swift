@@ -8,46 +8,41 @@
 import SwiftUI
 
 struct LoginView: View {
-
+    
     var onContinue: () -> Void
-
+    @State private var currentLoginPage = 0
+    
+    //for user page
+    @State private var userName: String = ""
+    @State private var userSelectedGenres: Set<Genre> = []
+    @State private var useCurrentLocation: Bool = false
+    
     var body: some View {
-        VStack(spacing: 32) {
+        TabView(selection: $currentLoginPage) {
+            WelcomeView(next: {
+                withAnimation { currentLoginPage = 1 }
+            })
+            .tag(0)
             
-            VStack(spacing: 8) {
-                Text("Welcome to Cinna")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-
-                Text("Sign in to start curating your personalized movie experience.")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-            }
-
-            VStack(spacing: 16) {
-                TextField(title: "Name")
-                TextField(title: "Password")
-            }
-            .padding(.horizontal)
-
-            Button(action: onContinue) {
-                Text("Continue")
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-            }
-            .padding(.horizontal)
-
-            Spacer()
+            UserInfoView(
+                name: $userName,
+                selectedGenres: $userSelectedGenres,
+                useCurrentLocation: $useCurrentLocation,
+                next: {
+                    withAnimation { currentLoginPage = 2 }
+                })
+            .tag(1)
+            
+            ReadyView(finish : {
+                withAnimation {
+                    onContinue()}
+            },
+                      name: userName
+            )
+            .tag(2)
         }
-        .padding(.top, 72)
-        .padding(.bottom)
-        .background(Color(.systemBackground))
+        .tabViewStyle(.page)
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
 }
 

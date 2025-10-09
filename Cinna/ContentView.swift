@@ -44,7 +44,8 @@ struct ContentView: View {
         } //end if userHasCompletedLogin
         else {
             LoginView {
-                userHasCompletedLogin = true
+                userHasCompletedLogin = true //uses onContinue in Login.swift
+                //this should stay true for the rest of the time that the user has the app installed
             }
         }
         
