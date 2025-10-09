@@ -24,9 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		91EAF7302E85C97D009E1489 /* Cinna.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cinna.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		91EAF73D2E85C97F009E1489 /* CinnaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CinnaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		91EAF7472E85C97F009E1489 /* CinnaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CinnaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91EAF7302E85C97D009E1489 /* Cinna.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Cinna.app; path = "/Users/brightonyoung/Documents/Xcode/Cinna/build/Debug-iphoneos/Cinna.app"; sourceTree = "<absolute>"; };
+		91EAF73D2E85C97F009E1489 /* CinnaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CinnaTests.xctest; path = "/Users/brightonyoung/Documents/Xcode/Cinna/build/Debug-iphoneos/Cinna.app/PlugIns/CinnaTests.xctest"; sourceTree = "<absolute>"; };
+		91EAF7472E85C97F009E1489 /* CinnaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = CinnaUITests.xctest; path = "/Users/brightonyoung/Documents/Xcode/Cinna/build/Debug-iphoneos/CinnaUITests-Runner.app/PlugIns/CinnaUITests.xctest"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -78,18 +78,7 @@
 				91EAF7322E85C97D009E1489 /* Cinna */,
 				91EAF7402E85C97F009E1489 /* CinnaTests */,
 				91EAF74A2E85C97F009E1489 /* CinnaUITests */,
-				91EAF7312E85C97D009E1489 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		91EAF7312E85C97D009E1489 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				91EAF7302E85C97D009E1489 /* Cinna.app */,
-				91EAF73D2E85C97F009E1489 /* CinnaTests.xctest */,
-				91EAF7472E85C97F009E1489 /* CinnaUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,7 +185,7 @@
 			mainGroup = 91EAF7272E85C97D009E1489;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 91EAF7312E85C97D009E1489 /* Products */;
+			productRefGroup = 91EAF7272E85C97D009E1489;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

@@ -33,11 +33,13 @@ struct LoginView: View {
                 })
             .tag(1)
             
-            ReadyView(finish : {
-                withAnimation {
-                    onContinue()}
-            },
-                      name: userName
+            ReadyView(
+                finish: {
+                    withAnimation {
+                        onContinue()
+                    }
+                },
+                name: userName
             )
             .tag(2)
         }
