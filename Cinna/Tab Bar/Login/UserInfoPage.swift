@@ -53,14 +53,6 @@ struct UserInfoView: View {
                     }
                 }
 
-                if !selectedGenres.isEmpty {
-                    Section("Selected Genres") {
-                        Text(selectedGenreTitles)
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                            .padding(.vertical, 4)
-                    }
-                }
             }
             .listStyle(.insetGrouped)
 
@@ -88,18 +80,11 @@ struct UserInfoView: View {
             selectedGenres.insert(genre)
         }
     }
-
-    private var selectedGenreTitles: String {
-        selectedGenres
-            .sorted { $0.title < $1.title }
-            .map(\.title)
-            .joined(separator: ", ")
-    }
 }
 
 #Preview {
     UserInfoView(
-        name: .constant("Alex"),
+        name: .constant("Daquon"),
         useCurrentLocation: .constant(true),
         selectedGenres: .constant([.action, .comedy])
     ) { }

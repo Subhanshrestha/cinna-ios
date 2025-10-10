@@ -16,12 +16,12 @@ final class MoviePreferencesData: ObservableObject {
         }
     }
 
-    var sortedSelectedGenres: [Genre] {
+    var sortedSelectedGenresArray: [Genre] {
         selectedGenres.sorted { $0.title < $1.title }
     }
 
-    var selectedGenreTitles: String {
-        sortedSelectedGenres.map(\.title).joined(separator: ", ")
+    var sortedSelectedGenresString: String {
+        sortedSelectedGenresArray.map(\.title).joined(separator: ", ")
     }
 
     private let defaults: UserDefaults
@@ -49,3 +49,5 @@ final class MoviePreferencesData: ObservableObject {
         static let genres = "moviePreferences.genres"
     }
 }
+
+

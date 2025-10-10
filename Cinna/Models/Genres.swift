@@ -29,7 +29,7 @@ enum Genre: String, CaseIterable, Identifiable {
         case .comedy: return "face.smiling"
         case .drama: return "theatermasks.fill"
         case .thriller: return "eye"
-        case .horror: return "spider"
+        case .horror: return "exclamationmark.triangle"
         case .scifi: return "sparkles"
         case .fantasy: return "wand.and.stars"
         case .romance: return "heart.fill"
