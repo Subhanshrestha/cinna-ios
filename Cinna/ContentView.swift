@@ -19,7 +19,8 @@ struct ContentView: View {
     @State private var selectedTab: Tab = .home
     
     var body: some View {
-        
+        Color(.systemBackground)
+            .ignoresSafeArea()
         if userHasCompletedLogin {
             TabView(selection: $selectedTab) {
                 Theaters()
@@ -33,7 +34,7 @@ struct ContentView: View {
                         Label("Home", systemImage: "house")
                     }
                     .tag(Tab.home)
-
+                
                 User()
                     .tabItem{
                         Label("User", systemImage: "person")
@@ -55,6 +56,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-            .environmentObject(UserInfoData())
-            .environmentObject(MoviePreferencesData())
+        .environmentObject(UserInfoData())
+        .environmentObject(MoviePreferencesData())
 }
