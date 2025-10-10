@@ -23,7 +23,7 @@ struct ReadyView: View {
                     .foregroundColor(.accentColor)
 
                 VStack(spacing: 8) {
-                    Text("All Set, \(name.isEmpty ? "my \(Text("Cinna").italic()) " : name)!")
+                    Text("All Set, \(name.isEmpty ? "my Cinna" : name)!")
                         .font(.largeTitle).bold()
 
                     Text("\(Text("Cinna").italic()) is now able to work tirelessly for you around the clock for no pay!")

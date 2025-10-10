@@ -10,6 +10,8 @@ import SwiftUI
 struct LoginView: View {
     
     var onContinue: () -> Void
+    @EnvironmentObject private var userInfo: UserInfoData
+    @EnvironmentObject private var moviePreferences: MoviePreferencesData
     @State private var currentLoginPage = 0
     
     //for user page
@@ -25,9 +27,10 @@ struct LoginView: View {
             .tag(0)
             
             UserInfoView(
-                name: $userName,
-                selectedGenres: $userSelectedGenres,
-                useCurrentLocation: $useCurrentLocation,
+                name: $userInfo.name,
+                useCurrentLocation: $userInfo.useCurrentLocation,
+                selectedGenres: $moviePreferences.selectedGenres,
+                  
                 next: {
                     withAnimation { currentLoginPage = 2 }
                 })
@@ -39,7 +42,7 @@ struct LoginView: View {
                         onContinue()
                     }
                 },
-                name: userName
+                name: userInfo.name
             )
             .tag(2)
         }
@@ -50,4 +53,6 @@ struct LoginView: View {
 
 #Preview {
     LoginView { }
+        .environmentObject(UserInfoData())
+        .environmentObject(MoviePreferencesData())
 }
