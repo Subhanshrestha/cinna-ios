@@ -21,6 +21,7 @@ struct ContentView: View {
     var body: some View {
         Color(.systemBackground)
             .ignoresSafeArea()
+        
         if userHasCompletedLogin {
             TabView(selection: $selectedTab) {
                 Theaters()

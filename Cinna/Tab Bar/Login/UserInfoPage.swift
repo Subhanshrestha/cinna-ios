@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct UserInfoView: View {
-    @Binding var name: String
-    @Binding var useCurrentLocation: Bool
-    @Binding var selectedGenres: Set<Genre>
+    
+    @EnvironmentObject private var userInfo: UserInfoData
+    @EnvironmentObject private var moviePreferences: MoviePreferencesData
     
     var next: () -> Void
     
@@ -36,14 +36,14 @@ struct UserInfoView: View {
                 Section("What do you like to watch?") {
                     ForEach(Genre.allCases) { genre in
                         Button {
-                            toggle(genre)
+                            moviePreferences.toggleGenre(genre)
                         } label: {
                             HStack {
                                 Image(systemName: genre.symbol)
                                     .frame(width: 24)
                                 Text(genre.title)
                                 Spacer()
-                                if selectedGenres.contains(genre) {
+                                if moviePreferences.selectedGenres.contains(genre) {
                                     Image(systemName: "checkmark")
                                         .font(.body.weight(.semibold))
                                 }
@@ -74,23 +74,11 @@ struct UserInfoView: View {
         }
         .background(Color(.systemBackground))
     }
-    
-    private func toggle(_ genre: Genre) {
-        if selectedGenres.contains(genre) {
-            selectedGenres.remove(genre)
-        } else {
-            selectedGenres.insert(genre)
-        }
-    }
 }
 
 #Preview {
-    @Previewable @State var name = "Daquon"
-    @Previewable @State var useCurrentLocation = true
-    @Previewable @State var selectedGenres: Set<Genre> = [.action, .comedy]
-    UserInfoView(
-        name: $name,
-        useCurrentLocation: $useCurrentLocation,
-        selectedGenres: $selectedGenres
-    ) { }
+    UserInfoView() { }
+        .environmentObject(userInfo)
+        .environmentObject(moviePreferences)
+    
 }
