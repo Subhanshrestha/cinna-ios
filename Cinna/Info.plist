@@ -2,7 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>G_PLACES_API_KEY</key>
-	<string>AIzaSyDt5OAA004OIUx8Hfu4D6h0x442nG02usY</string>
+        <key>G_PLACES_API_KEY</key>
+        <string>AIzaSyDt5OAA004OIUx8Hfu4D6h0x442nG02usY</string>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>We use your location to find nearby movie theaters and personalize recommendations.</string>
 </dict>
 </plist>

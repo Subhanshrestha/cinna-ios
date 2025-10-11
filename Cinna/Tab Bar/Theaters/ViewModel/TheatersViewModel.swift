@@ -27,7 +27,7 @@ final class TheatersViewModel: ObservableObject {
 
     @Published var state: State = .idle
     private let placesService: PlacesService
-    private let locationManager = LocationManager()
+    private var lastLoadedCoordinate: CLLocationCoordinate2D?
 
     init(placesService: PlacesService? = nil) {
         do {
@@ -38,18 +38,30 @@ final class TheatersViewModel: ObservableObject {
         }
     }
 
-    func loadNearbyTheaters() async {
+    func loadNearbyTheaters(coordinate: CLLocationCoordinate2D) async {
+        if let lastLoadedCoordinate,
+           abs(lastLoadedCoordinate.latitude - coordinate.latitude) < 0.0001,
+           abs(lastLoadedCoordinate.longitude - coordinate.longitude) < 0.0001,
+           case .loaded = state {
+            return
+        }
+
         print("🚀 loadNearbyTheaters() called")
         state = .loading
         do {
-            let coordinate = try await locationManager.requestLocation()
             print("📍 Got coordinate: \(coordinate.latitude), \(coordinate.longitude)")
             let theaters = try await placesService.nearbyMovieTheaters(at: coordinate, radius: 15000)
             print("🎬 API returned \(theaters.count) theaters")
+            lastLoadedCoordinate = coordinate
             state = .loaded(theaters)
         } catch {
             print("❌ Error in loadNearbyTheaters(): \(error.localizedDescription)")
             state = .error(error)
         }
+    }
+
+    func reset() {
+        lastLoadedCoordinate = nil
+        state = .idle
     }
 }
