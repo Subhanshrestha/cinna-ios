@@ -25,9 +25,19 @@ final class TheatersViewModel: ObservableObject {
         case error(Error)
     }
 
+    enum TheatersLocationError: LocalizedError {
+        case locationUnavailable
+
+        var errorDescription: String? {
+            switch self {
+            case .locationUnavailable:
+                return "Location unavailable. Enable \"Use Current Location\" during login to view nearby theaters."
+            }
+        }
+    }
+
     @Published var state: State = .idle
     private let placesService: PlacesService
-    private let locationManager = LocationManager()
 
     init(placesService: PlacesService? = nil) {
         do {
@@ -38,12 +48,18 @@ final class TheatersViewModel: ObservableObject {
         }
     }
 
-    func loadNearbyTheaters() async {
+    func loadNearbyTheaters(at coordinate: CLLocationCoordinate2D?) async {
         print("🚀 loadNearbyTheaters() called")
         state = .loading
+
+        guard let coordinate else {
+            print("❌ Missing coordinate for theaters lookup")
+            state = .error(TheatersLocationError.locationUnavailable)
+            return
+        }
+
         do {
-            let coordinate = try await locationManager.requestLocation()
-            print("📍 Got coordinate: \(coordinate.latitude), \(coordinate.longitude)")
+            print("📍 Using coordinate: \(coordinate.latitude), \(coordinate.longitude)")
             let theaters = try await placesService.nearbyMovieTheaters(at: coordinate, radius: 15000)
             print("🎬 API returned \(theaters.count) theaters")
             state = .loaded(theaters)
@@ -51,5 +67,9 @@ final class TheatersViewModel: ObservableObject {
             print("❌ Error in loadNearbyTheaters(): \(error.localizedDescription)")
             state = .error(error)
         }
+    }
+
+    func reset() {
+        state = .idle
     }
 }

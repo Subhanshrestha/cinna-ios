@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CoreLocation
 import Foundation
 
 final class UserInfoData: ObservableObject {
@@ -14,7 +15,25 @@ final class UserInfoData: ObservableObject {
     }
 
     @Published var useCurrentLocationBool: Bool {
-        didSet { defaults.set(useCurrentLocationBool, forKey: Keys.useCurrentLocationBool) }
+        didSet {
+            defaults.set(useCurrentLocationBool, forKey: Keys.useCurrentLocationBool)
+
+            if !useCurrentLocationBool && currentLocation != nil {
+                currentLocation = nil
+            }
+        }
+    }
+
+    @Published var currentLocation: CLLocationCoordinate2D? {
+        didSet {
+            if let currentLocation {
+                defaults.set(currentLocation.latitude, forKey: Keys.latitude)
+                defaults.set(currentLocation.longitude, forKey: Keys.longitude)
+            } else {
+                defaults.removeObject(forKey: Keys.latitude)
+                defaults.removeObject(forKey: Keys.longitude)
+            }
+        }
     }
 
     private let defaults: UserDefaults
@@ -29,10 +48,29 @@ final class UserInfoData: ObservableObject {
         } else {
             useCurrentLocationBool = false
         }
+
+        if let latitude = defaults.object(forKey: Keys.latitude) as? Double,
+           let longitude = defaults.object(forKey: Keys.longitude) as? Double {
+            currentLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        } else {
+            currentLocation = nil
+        }
+    }
+
+    func updateLocation(_ coordinate: CLLocationCoordinate2D) {
+        useCurrentLocationBool = true
+        currentLocation = coordinate
+    }
+
+    func clearLocation() {
+        useCurrentLocationBool = false
+        currentLocation = nil
     }
 
     private enum Keys {
         static let name = "userInfo.name"
         static let useCurrentLocationBool = "userInfo.useCurrentLocation"
+        static let latitude = "userInfo.latitude"
+        static let longitude = "userInfo.longitude"
     }
 }

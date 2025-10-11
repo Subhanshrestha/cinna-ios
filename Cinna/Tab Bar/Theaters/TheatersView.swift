@@ -9,6 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct TheatersView: View {
+    @EnvironmentObject private var userInfo: UserInfoData
     @StateObject private var viewModel = TheatersViewModel()
 
     var body: some View {
@@ -23,62 +24,94 @@ struct TheatersView: View {
                 .ignoresSafeArea()
 
                 VStack {
-                    switch viewModel.state {
-                    case .idle, .loading:
+                    if !userInfo.useCurrentLocationBool || userInfo.currentLocation == nil {
                         VStack(spacing: 12) {
-                            ProgressView("Finding theaters near you…")
-                                .progressViewStyle(CircularProgressViewStyle(tint: .yellow))
-                                .padding()
-                            Text("Please ensure location access is allowed.")
+                            Image(systemName: "location.slash")
+                                .font(.system(size: 42))
+                                .foregroundStyle(.yellow)
+                            Text("Location Needed")
+                                .font(.title3.bold())
+                                .foregroundColor(.white)
+                            Text("Enable \"Use Current Location\" during login to discover theaters near you.")
+                                .multilineTextAlignment(.center)
                                 .font(.footnote)
                                 .foregroundColor(.gray)
+                                .padding(.horizontal)
                         }
                         .frame(maxHeight: .infinity)
-
-                    case .loaded(let theaters):
-                        if theaters.isEmpty {
-                            VStack {
-                                Text("No theaters found nearby 😔")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .padding(.top, 20)
+                    } else {
+                        switch viewModel.state {
+                        case .idle, .loading:
+                            VStack(spacing: 12) {
+                                ProgressView("Finding theaters near you…")
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .yellow))
+                                    .padding()
+                                Text("Please ensure location access is allowed.")
+                                    .font(.footnote)
+                                    .foregroundColor(.gray)
                             }
                             .frame(maxHeight: .infinity)
-                        } else {
-                            ScrollView {
-                                VStack(spacing: 14) {
-                                    ForEach(theaters, id: \.id) { theater in
-                                        NavigationLink(destination: TheaterDetailView(theater: theater)) {
-                                            TheaterCardView(theater: theater)
+
+                        case .loaded(let theaters):
+                            if theaters.isEmpty {
+                                VStack {
+                                    Text("No theaters found nearby 😔")
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .padding(.top, 20)
+                                }
+                                .frame(maxHeight: .infinity)
+                            } else {
+                                ScrollView {
+                                    VStack(spacing: 14) {
+                                        ForEach(theaters, id: \.id) { theater in
+                                            NavigationLink(destination: TheaterDetailView(theater: theater)) {
+                                                TheaterCardView(theater: theater)
+                                            }
+                                            .buttonStyle(.plain)
                                         }
-                                        .buttonStyle(.plain)
+                                    }
+                                    .padding(.vertical)
+                                }
+                            }
+
+                        case .error(let error):
+                            VStack(spacing: 12) {
+                                Text("⚠️ Error: \(error.localizedDescription)")
+                                    .foregroundColor(.red)
+                                Button("Retry") {
+                                    Task {
+                                        await viewModel.loadNearbyTheaters(at: userInfo.currentLocation)
                                     }
                                 }
-                                .padding(.vertical)
+                                .buttonStyle(.borderedProminent)
                             }
+                            .frame(maxHeight: .infinity)
                         }
-
-                    case .error(let error):
-                        VStack(spacing: 12) {
-                            Text("⚠️ Error: \(error.localizedDescription)")
-                                .foregroundColor(.red)
-                            Button("Retry") {
-                                Task {
-                                    await viewModel.loadNearbyTheaters()
-                                }
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                        .frame(maxHeight: .infinity)
                     }
                 }
             }
             .navigationTitle("🎬 Theaters")
             .navigationBarTitleDisplayMode(.large)
-            .task {
-                await viewModel.loadNearbyTheaters()
+            .task(id: locationIdentifier) {
+                guard userInfo.useCurrentLocationBool,
+                      let coordinate = userInfo.currentLocation else {
+                    viewModel.reset()
+                    return
+                }
+                await viewModel.loadNearbyTheaters(at: coordinate)
             }
         }
+    }
+}
+
+private extension TheatersView {
+    var locationIdentifier: String {
+        guard let coordinate = userInfo.currentLocation,
+              userInfo.useCurrentLocationBool else {
+            return "location-unavailable"
+        }
+        return "\(coordinate.latitude)-\(coordinate.longitude)"
     }
 }
 
