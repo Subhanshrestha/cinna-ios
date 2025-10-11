@@ -29,9 +29,22 @@
 		D2674E5A2E98978100FF84BD /* CinnaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CinnaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		91D3B3162E9782610082E251 /* Exceptions for "Cinna" folder in "Cinna" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 91EAF72F2E85C97D009E1489 /* Cinna */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		91EAF7322E85C97D009E1489 /* Cinna */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				91D3B3162E9782610082E251 /* Exceptions for "Cinna" folder in "Cinna" target */,
+			);
 			path = Cinna;
 			sourceTree = "<group>";
 		};
@@ -392,7 +405,9 @@
 				DEVELOPMENT_TEAM = 56Z33J7XB8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Cinna/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We use your location to find nearby theaters.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -421,7 +436,9 @@
 				DEVELOPMENT_TEAM = 56Z33J7XB8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Cinna/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We use your location to find nearby theaters.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
