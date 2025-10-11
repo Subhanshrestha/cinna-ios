@@ -8,17 +8,25 @@
 import SwiftUI
 
 struct Profile: View {
+    @EnvironmentObject private var userInfo: UserInfoData
+
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Profile")
-                    .font(.largeTitle.bold())
+        Form {
+            Section("*Cinna* Profile Details") {
+                HStack{
+                    Text("Name")
+                        .bold()
+                    SwiftUI.TextField("Your name", text: $userInfo.name)
+                        .textContentType(.name)
+                        .contentShape(Rectangle())
+                }
                 
-                Text("Account details and personal information will appear here.")
-                    .foregroundStyle(.secondary)
+
+                Toggle("Use Current Location", isOn: $userInfo.useCurrentLocationBool)
+                    .bold()
+                    .tint(.accentColor)
             }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
+
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)

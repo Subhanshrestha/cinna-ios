@@ -8,19 +8,46 @@
 import SwiftUI
 
 struct MoviePreferences: View {
+    @EnvironmentObject private var moviePreferences: MoviePreferencesData
+    
     var body: some View {
-        ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Movie Preferences")
-                            .font(.largeTitle.bold())
-
-                        Text("Tune your favorite genres, moods, and theater settings from here.")
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        List {
+            Section("Your Genres") {
+                if moviePreferences.sortedSelectedGenresArray.isEmpty {
+                    Text("You haven't picked any genres yet.")
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text(moviePreferences.sortedSelectedGenresString)
+                        .font(.body.weight(.semibold))
+                        .accessibilityLabel("Selected genres: \(moviePreferences.sortedSelectedGenresString)")
                 }
-                .navigationTitle("Movie Preferences")
-                .navigationBarTitleDisplayMode(.inline)
+            }
+            
+            Section("Choose Your Favorites") {
+                ForEach(Genre.allCases) { genre in
+                    Toggle(isOn: Binding(
+                        get: { moviePreferences.selectedGenres.contains(genre) },
+                        set: { isOn in
+                            if isOn {
+                                moviePreferences.selectedGenres.insert(genre)
+                            } else {
+                                moviePreferences.selectedGenres.remove(genre)
+                            }
+                        }
+                    )) {
+                        Label(genre.title, systemImage: genre.symbol)
+                    }
+                    .tint(.accentColor)
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+        .navigationTitle("Movie Preferences")
+        .navigationBarTitleDisplayMode(.inline)
     }
+}
+
+#Preview {
+    MoviePreferences()
+        .environmentObject(MoviePreferencesData())
 }

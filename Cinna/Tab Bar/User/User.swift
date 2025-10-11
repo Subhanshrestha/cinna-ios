@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct User: View {
+    @EnvironmentObject private var userInfo: UserInfoData
+    @EnvironmentObject private var moviePreferences: MoviePreferencesData
     @State private var showNotifications = false
     
     //Custom notifications - temporary
@@ -24,7 +26,7 @@ struct User: View {
                 //body shit
                 ScrollView {
                     
-                    VStack(alignment: .center, spacing: 32) {
+                    VStack(alignment: .center, spacing: 16) {
                         (Text("My \(Text("Cinna").italic())"))
                             .font(.largeTitle.bold())
                     }

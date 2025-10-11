@@ -13,8 +13,8 @@ final class UserInfoData: ObservableObject {
         didSet { defaults.set(name, forKey: Keys.name) }
     }
 
-    @Published var useCurrentLocation: Bool {
-        didSet { defaults.set(useCurrentLocation, forKey: Keys.useCurrentLocation) }
+    @Published var useCurrentLocationBool: Bool {
+        didSet { defaults.set(useCurrentLocationBool, forKey: Keys.useCurrentLocationBool) }
     }
 
     private let defaults: UserDefaults
@@ -24,15 +24,15 @@ final class UserInfoData: ObservableObject {
 
         name = defaults.string(forKey: Keys.name) ?? ""
 
-        if defaults.object(forKey: Keys.useCurrentLocation) != nil {
-            useCurrentLocation = defaults.bool(forKey: Keys.useCurrentLocation)
+        if defaults.object(forKey: Keys.useCurrentLocationBool) != nil {
+            useCurrentLocationBool = defaults.bool(forKey: Keys.useCurrentLocationBool)
         } else {
-            useCurrentLocation = false
+            useCurrentLocationBool = false
         }
     }
 
     private enum Keys {
         static let name = "userInfo.name"
-        static let useCurrentLocation = "userInfo.useCurrentLocation"
+        static let useCurrentLocationBool = "userInfo.useCurrentLocation"
     }
 }

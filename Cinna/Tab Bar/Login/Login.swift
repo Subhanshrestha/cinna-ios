@@ -14,11 +14,6 @@ struct LoginView: View {
     @EnvironmentObject private var moviePreferences: MoviePreferencesData
     @State private var currentLoginPage = 0
     
-    //for user page
-    @State private var userName: String = ""
-    @State private var userSelectedGenres: Set<Genre> = []
-    @State private var useCurrentLocation: Bool = false
-    
     var body: some View {
         TabView(selection: $currentLoginPage) {
             WelcomeView(next: {
@@ -26,12 +21,7 @@ struct LoginView: View {
             })
             .tag(0)
             
-            UserInfoView(
-                name: $userInfo.name,
-                useCurrentLocation: $userInfo.useCurrentLocation,
-                selectedGenres: $moviePreferences.selectedGenres,
-                  
-                next: {
+            UserInfoView(next: {
                     withAnimation { currentLoginPage = 2 }
                 })
             .tag(1)

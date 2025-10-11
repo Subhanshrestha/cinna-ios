@@ -24,12 +24,13 @@ struct UserInfoView: View {
             
             List {
                 Section("Your Name") {
-                    SwiftUI.TextField("e.g., Success Qu'avon", text: $name)
+                    SwiftUI.TextField("e.g., Success Qu'avon", text: $userInfo.name)
                         .textContentType(.name)
+                        .contentShape(Rectangle())
                 }
                 
                 Section("Location Preference") {
-                    Toggle("Use Current Location", isOn: $useCurrentLocation)
+                    Toggle("Use Current Location", isOn: $userInfo.useCurrentLocationBool)
                         .tint(.accentColor)
                 }
                 
@@ -77,8 +78,7 @@ struct UserInfoView: View {
 }
 
 #Preview {
-    UserInfoView() { }
-        .environmentObject(userInfo)
-        .environmentObject(moviePreferences)
-    
+    UserInfoView(next: { })
+        .environmentObject(UserInfoData())
+        .environmentObject(MoviePreferencesData())
 }

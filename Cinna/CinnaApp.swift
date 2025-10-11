@@ -11,6 +11,7 @@ import SwiftUI
 struct CinnaApp: App {
     @StateObject private var userInfo = UserInfoData()
     @StateObject private var moviePreferences = MoviePreferencesData()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
