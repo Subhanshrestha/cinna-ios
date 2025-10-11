@@ -24,52 +24,55 @@ struct WelcomeView: View {
             Text("Welcome to \(Text("Cinna").italic())")
                 .font(.largeTitle).bold()
             
-            Text("Your AI-powered movie companion, ready to tailor reviews, recommend films, and even show your seat view.")
+            Text("Your AI-powered movie servant, ready to tailor reviews, recommend films, and even show your seat view.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal)
             
-            Button("Let's Work!") {
+            Button {
                 playWhipAndScreamSound()
                 next()
+            } label: {
+                Text("Let's Work!")
+                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent)
-            .padding(.top)
+            .buttonStyle(.loginPrimary)
+            .padding(.top, 12)
         }
         .padding()
     }
     
     private func playWhipAndScreamSound() {
         guard
-                let whipURL = Bundle.main.url(forResource: "whipSound", withExtension: "mp3"),
-                let screamURL = Bundle.main.url(forResource: "screamSound", withExtension: "mp3")
-            else {
-                print("⚠️ Missing audio file(s).")
-                return
+            let whipURL = Bundle.main.url(forResource: "whipSound", withExtension: "mp3"),
+            let screamURL = Bundle.main.url(forResource: "screamSound", withExtension: "mp3")
+        else {
+            print("⚠️ Missing audio file(s).")
+            return
+        }
+        
+        do {
+            whipSound = try AVAudioPlayer(contentsOf: whipURL)
+            screamSound = try AVAudioPlayer(contentsOf: screamURL)
+            
+            whipSound?.delegate = AVPlayerDelegate.shared
+            AVPlayerDelegate.shared.onFinish = { _ in
+                screamSound?.play()  // play when whip finishes
             }
-
-            do {
-                whipSound = try AVAudioPlayer(contentsOf: whipURL)
-                screamSound = try AVAudioPlayer(contentsOf: screamURL)
-
-                whipSound?.delegate = AVPlayerDelegate.shared
-                AVPlayerDelegate.shared.onFinish = { _ in
-                    screamSound?.play()  // play when whip finishes
-                }
-
-                whipSound?.prepareToPlay()
-                screamSound?.prepareToPlay()
-                whipSound?.play()
-            } catch {
-                print("⚠️ Error loading sounds: \(error.localizedDescription)")
-            }
+            
+            whipSound?.prepareToPlay()
+            screamSound?.prepareToPlay()
+            whipSound?.play()
+        } catch {
+            print("⚠️ Error loading sounds: \(error.localizedDescription)")
+        }
     }
 }
 
 class AVPlayerDelegate: NSObject, AVAudioPlayerDelegate {
     static let shared = AVPlayerDelegate()
     var onFinish: ((AVAudioPlayer) -> Void)?
-
+    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         onFinish?(player)
     }

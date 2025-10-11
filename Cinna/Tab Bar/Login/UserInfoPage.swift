@@ -63,15 +63,11 @@ struct UserInfoView: View {
                 next()
             } label: {
                 Text("Continue")
-                    .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                    .padding(.horizontal)
-                    .padding(.vertical, 12)
+                
             }
+            .buttonStyle(.loginPrimary)
+            .padding(.vertical, 12)
         }
         .background(Color(.systemBackground))
     }
