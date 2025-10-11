@@ -11,25 +11,27 @@ import CoreLocation
 
 struct TheaterDetailView: View {
     let theater: Theater
-
-    // Map region centered on the theater
-    @State private var region: MKCoordinateRegion
-
+    
+    // Map camera centered on the theater
+    @State private var cameraPosition: MapCameraPosition
+    
     init(theater: Theater) {
         self.theater = theater
-        _region = State(initialValue: MKCoordinateRegion(
+        let region = MKCoordinateRegion(
             center: theater.location,
             span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-        ))
+        )
+        _cameraPosition = State(initialValue: .region(region))
     }
-
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-
+                
                 // Map with a single pin at the theater
-                Map(coordinateRegion: $region, annotationItems: [theater]) { t in
-                    MapMarker(coordinate: t.location, tint: .yellow)
+                Map(position: $cameraPosition) {
+                    Marker(theater.name, coordinate: theater.location)
+                        .tint(.yellow)
                 }
                 .frame(height: 240)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -37,13 +39,13 @@ struct TheaterDetailView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.white.opacity(0.08), lineWidth: 1)
                 )
-
+                
                 // Title & rating
                 VStack(alignment: .leading, spacing: 8) {
                     Text(theater.name)
                         .font(.title2).bold()
                         .foregroundColor(.primary)
-
+                    
                     HStack(spacing: 8) {
                         Image(systemName: "star.fill")
                             .foregroundColor(.yellow)
@@ -54,7 +56,7 @@ struct TheaterDetailView: View {
                     }
                     .font(.headline)
                 }
-
+                
                 // Address
                 if let addr = theater.address {
                     HStack(alignment: .top, spacing: 8) {
@@ -64,7 +66,7 @@ struct TheaterDetailView: View {
                             .foregroundColor(.secondary)
                     }
                 }
-
+                
                 // Placeholder for future showtimes/seat map/etc.
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Coming Soon")
