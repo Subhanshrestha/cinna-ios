@@ -9,26 +9,30 @@ import SwiftUI
 
 struct Profile: View {
     @EnvironmentObject private var userInfo: UserInfoData
-
+    
     var body: some View {
         Form {
             Section("*Cinna* Profile Details") {
-                HStack{
-                    Text("Name")
+                    HStack{
+                        Text("Name")
+                            .bold()
+                        SwiftUI.TextField("Your name", text: $userInfo.name)
+                            .textContentType(.name)
+                            .contentShape(Rectangle())
+                    }
+                    
+                    
+                    Toggle("Use Current Location", isOn: $userInfo.useCurrentLocationBool)
                         .bold()
-                    SwiftUI.TextField("Your name", text: $userInfo.name)
-                        .textContentType(.name)
-                        .contentShape(Rectangle())
-                }
-                
-
-                Toggle("Use Current Location", isOn: $userInfo.useCurrentLocationBool)
-                    .bold()
-                    .tint(.accentColor)
+                        .tint(.accentColor)
             }
-
+            .navigationTitle("Profile")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationTitle("Profile")
-        .navigationBarTitleDisplayMode(.inline)
-    }
+    }//end body
+}
+
+#Preview {
+    Profile()
+        .environmentObject(UserInfoData())
 }
