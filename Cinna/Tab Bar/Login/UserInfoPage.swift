@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreLocation
+import CoreLocationUI   // for the native LocationButton
 
 struct UserInfoView: View {
 
@@ -22,111 +23,108 @@ struct UserInfoView: View {
     var next: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            Text("*Cinna*")
-                .font(.largeTitle.bold())
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-                .padding(.top, 24)
+        NavigationStack {
+            VStack(spacing: 0) {
+                Text("*Cinna*")
+                    .font(.largeTitle.bold())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.top, 24)
 
-            List {
-                Section("Your Name") {
-                    SwiftUI.TextField("e.g., Success Qu'avon", text: $userInfo.name)
-                        .textContentType(.name)
-                        .contentShape(Rectangle())
-                }
+                List {
+                    // MARK: Name
+                    Section("Your Name") {
+                        SwiftUI.TextField("e.g., Success Qu'avon", text: $userInfo.name)
+                            .textContentType(.name)
+                            .contentShape(Rectangle())
+                    }
 
-                Section("Location Preference") {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Button {
-                            Task { await requestCurrentLocation() }
-                        } label: {
-                            HStack {
-                                if isRequestingLocation {
-                                    ProgressView()
-                                        .progressViewStyle(.circular)
-                                }
-
-                                Text(userInfo.useCurrentLocationBool ? "Location Saved" : "Use Current Location")
-                                    .frame(maxWidth: .infinity, alignment: .center)
+                    // MARK: Location (native)
+                    Section("Location") {
+                        VStack(alignment: .leading, spacing: 12) {
+                            LocationButton(.currentLocation) {
+                                Task { await requestLocationFlow() }
                             }
+                            .labelStyle(.titleAndIcon)
+                            .controlSize(.large)
+                            .buttonBorderShape(.roundedRectangle)
+                            .tint(.accentColor)
                             .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.accentColor)
-                        .disabled(isRequestingLocation)
+                            .frame(height: 48)
+                            .contentShape(Rectangle())
+                            .disabled(isRequestingLocation)
+                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
 
-                        if let locationStatusMessage {
-                            Text(locationStatusMessage)
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        } else if let locationErrorMessage {
-                            Text(locationErrorMessage)
-                                .font(.footnote)
-                                .foregroundStyle(.red)
-                        } else if userInfo.useCurrentLocationBool,
-                                  userInfo.currentLocation != nil {
-                            Text("Location saved and ready to use for nearby theaters.")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        } else {
-                            Text("Tap the button to allow Cinna to use your current location for nearby theaters.")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
 
-                Section("What do you like to watch?") {
-                    ForEach(Genre.allCases) { genre in
-                        Button {
-                            moviePreferences.toggleGenre(genre)
-                        } label: {
-                            HStack {
-                                Image(systemName: genre.symbol)
-                                    .frame(width: 24)
-                                Text(genre.title)
-                                Spacer()
-                                if moviePreferences.selectedGenres.contains(genre) {
-                                    Image(systemName: "checkmark")
-                                        .font(.body.weight(.semibold))
+                            Group {
+                                if let locationStatusMessage {
+                                    Text(locationStatusMessage)
+                                } else if let locationErrorMessage {
+                                    Text(locationErrorMessage).foregroundStyle(.red)
+                                } else if userInfo.currentLocation != nil {
+                                    Text("Location saved and ready to use for nearby theaters.")
+                                } else {
+                                    Text("Share your location so we can find nearby theaters.")
                                 }
                             }
-                            .contentShape(Rectangle()) //CRITICAL for making the button be tappable edge to edge
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 2)
                         }
-                        .buttonStyle(.plain)
-                        
+                    }
+
+                    // MARK: Genres
+                    Section("What do you like to watch?") {
+                        ForEach(Genre.allCases, id: \.self) { genre in
+                            Button {
+                                moviePreferences.toggleGenre(genre)
+                            } label: {
+                                HStack {
+                                    Image(systemName: genre.symbol).frame(width: 24)
+                                    Text(genre.title)
+                                    Spacer()
+                                    if moviePreferences.selectedGenres.contains(genre) {
+                                        Image(systemName: "checkmark")
+                                            .font(.body.weight(.semibold))
+                                            .accessibilityHidden(true)
+                                    }
+                                }
+                                .contentShape(Rectangle()) // full-row tap
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
-                
+                .listStyle(.insetGrouped)
             }
-            .listStyle(.insetGrouped)
-            
-            Button {
-                next()
-            } label: {
-                Text("Continue")
-                    .frame(maxWidth: .infinity)
-                
+            .background(Color(.systemBackground))
+            .safeAreaInset(edge: .bottom) {
+                Button(action: next) {
+                    Text("Continue")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.loginPrimary) // keep your existing style
+                .padding(.horizontal)
+                .padding(.vertical, 12)
+                .background(.ultraThinMaterial)
             }
-            .buttonStyle(.loginPrimary)
-            .padding(.vertical, 12)
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .background(Color(.systemBackground))
     }
 }
 
-#if DEBUG
+// MARK: - Preview
 #Preview {
     UserInfoView(next: { })
         .environmentObject(UserInfoData())
         .environmentObject(MoviePreferencesData())
 }
-#endif
 
+// MARK: - Location flow
 extension UserInfoView {
     @MainActor
-    private func requestCurrentLocation() async {
+    private func requestLocationFlow() async {
         guard !isRequestingLocation else { return }
 
         isRequestingLocation = true
@@ -134,12 +132,16 @@ extension UserInfoView {
         locationErrorMessage = nil
 
         do {
+            // This uses your existing LocationManager which ensures auth + requests one-shot location.
             let coordinate = try await locationManager.requestLocation()
-            userInfo.updateLocation(coordinate)
-            locationStatusMessage = "Location saved successfully."
+
+            // Treat this as “while using” semantics for persistence.
+            userInfo.updateLocation(coordinate, preference: .allowWhileUsing)
+            locationStatusMessage = "Location saved for nearby theaters."
         } catch {
             userInfo.clearLocation()
-            locationErrorMessage = error.localizedDescription
+            locationErrorMessage = (error as? LocalizedError)?.errorDescription
+                ?? error.localizedDescription
         }
 
         isRequestingLocation = false

@@ -22,7 +22,7 @@ struct ContentView: View {
         ZStack {
             Color(.systemBackground)
                 .ignoresSafeArea()
-
+            
             if userHasCompletedLogin {
                 TabView(selection: $selectedTab) {
                     TheatersView()
@@ -30,20 +30,21 @@ struct ContentView: View {
                             Label("Theaters", systemImage: "ticket")
                         }
                         .tag(Tab.theaters)
-
+                    
                     Home()
                         .tabItem {
                             Label("Home", systemImage: "house")
                         }
                         .tag(Tab.home)
-
+                    
                     User()
                         .tabItem{
                             Label("User", systemImage: "person")
                         }
                         .tag(Tab.user)
-
+                    
                 }
+                
             } //end if userHasCompletedLogin
             else {
                 LoginView {

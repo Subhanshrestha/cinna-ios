@@ -10,16 +10,19 @@ import CoreLocation
 import Foundation
 
 final class UserInfoData: ObservableObject {
+
+    // MARK: - Published user fields
     @Published var name: String {
         didSet { defaults.set(name, forKey: Keys.name) }
     }
 
+    /// Mirror flag if you want to show a toggle/switch elsewhere (optional).
     @Published var useCurrentLocationBool: Bool {
         didSet {
             defaults.set(useCurrentLocationBool, forKey: Keys.useCurrentLocationBool)
-
-            if !useCurrentLocationBool && currentLocation != nil {
-                currentLocation = nil
+            if !useCurrentLocationBool {
+                // If turned off, clear any stored coordinates.
+                clearLocation()
             }
         }
     }
@@ -36,41 +39,61 @@ final class UserInfoData: ObservableObject {
         }
     }
 
+    @Published var locationPreference: LocationPreference? {
+        didSet {
+            if let locationPreference {
+                defaults.set(locationPreference.rawValue, forKey: Keys.locationPreference)
+            } else {
+                defaults.removeObject(forKey: Keys.locationPreference)
+            }
+        }
+    }
+
+    // MARK: - Storage
     private let defaults: UserDefaults
 
+    // MARK: - Init
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
 
-        name = defaults.string(forKey: Keys.name) ?? ""
+        // Load
+        self.name = defaults.string(forKey: Keys.name) ?? ""
+        self.useCurrentLocationBool = defaults.object(forKey: Keys.useCurrentLocationBool) as? Bool ?? false
 
-        if defaults.object(forKey: Keys.useCurrentLocationBool) != nil {
-            useCurrentLocationBool = defaults.bool(forKey: Keys.useCurrentLocationBool)
+        if let lat = defaults.object(forKey: Keys.latitude) as? CLLocationDegrees,
+           let lon = defaults.object(forKey: Keys.longitude) as? CLLocationDegrees {
+            self.currentLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
         } else {
-            useCurrentLocationBool = false
+            self.currentLocation = nil
         }
 
-        if let latitude = defaults.object(forKey: Keys.latitude) as? Double,
-           let longitude = defaults.object(forKey: Keys.longitude) as? Double {
-            currentLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        if let raw = defaults.string(forKey: Keys.locationPreference),
+           let pref = LocationPreference(rawValue: raw) {
+            self.locationPreference = pref
         } else {
-            currentLocation = nil
+            self.locationPreference = nil
         }
     }
 
-    func updateLocation(_ coordinate: CLLocationCoordinate2D) {
-        useCurrentLocationBool = true
+    // MARK: - Public helpers used by the view
+    func updateLocation(_ coordinate: CLLocationCoordinate2D, preference: LocationPreference) {
         currentLocation = coordinate
+        locationPreference = preference
+        useCurrentLocationBool = true
     }
 
     func clearLocation() {
-        useCurrentLocationBool = false
         currentLocation = nil
+        locationPreference = nil
+        useCurrentLocationBool = false
     }
 
+    // MARK: - Keys
     private enum Keys {
-        static let name = "userInfo.name"
-        static let useCurrentLocationBool = "userInfo.useCurrentLocation"
-        static let latitude = "userInfo.latitude"
-        static let longitude = "userInfo.longitude"
+        static let name = "UserInfo.name"
+        static let useCurrentLocationBool = "UserInfo.useCurrentLocationBool"
+        static let latitude = "UserInfo.latitude"
+        static let longitude = "UserInfo.longitude"
+        static let locationPreference = "UserInfo.locationPreference"
     }
 }
