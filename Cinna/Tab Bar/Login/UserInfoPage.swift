@@ -50,7 +50,6 @@ struct UserInfoView: View {
                             .buttonBorderShape(.roundedRectangle)
                             .tint(.accentColor)
                             .frame(maxWidth: .infinity)
-                            .frame(height: 48)
                             .contentShape(Rectangle())
                             .disabled(isRequestingLocation)
                             .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
